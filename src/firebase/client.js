@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 
-import { getAuth, GithubAuthProvider, onAuthStateChanged, signInWithPopup, useDeviceLanguage } from 'firebase/auth'
+import { getAuth, GithubAuthProvider, onAuthStateChanged, signInWithPopup, useDeviceLanguage, signOut } from 'firebase/auth'
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_APIKEY,
@@ -41,4 +41,8 @@ export const loginWithGithub = async () => {
     const githubProvider = new GithubAuthProvider()
     useDeviceLanguage(auth)
     return await signInWithPopup(auth, githubProvider)
+}
+
+export const signOutFromAccount = async () => {
+   await signOut(auth)
 }
