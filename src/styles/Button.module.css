@@ -1,0 +1,27 @@
+.button {
+    color: #ffffff;
+    cursor: pointer;
+    border: 0;
+    display: flex;
+    padding: 8px 24px;
+    font-size: 12px;
+    background: #000000;
+    transition: opacity .3s ease;
+    font-weight: 800;
+    align-items: center;
+    user-select: none;
+    border-radius: 9999px;
+}
+
+.button[disabled] {
+    opacity: .2;
+    pointer-events: none;
+}
+
+.button> :global(svg) {
+    margin-right: 8px;
+}
+
+.button:hover {
+    opacity: .7;
+}
