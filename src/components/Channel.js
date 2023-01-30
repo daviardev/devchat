@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { db, auth } from 'firebase/client'
 import { onSnapshot, orderBy, collection, query, limit, Timestamp, addDoc } from 'firebase/firestore'
+import Message from './Message'
 
 const Channel = () => {
     const [messages, setMessages] = useState([])
@@ -48,7 +49,9 @@ const Channel = () => {
     return <>
         <ul>
             {messages.map(message => (
-                <li key={message.id}>{message.text}</li>
+                <li key={message.id}>
+                    <Message { ...message } />
+                </li>
             ))}
         </ul>
         <form onSubmit={handleOnSubmit}>
