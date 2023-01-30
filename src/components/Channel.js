@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
 
-import { db } from 'firebase/client'
-import { onSnapshot, orderBy, collection, query, limit } from 'firebase/firestore'
+import { db, auth } from 'firebase/client'
+import { onSnapshot, orderBy, collection, query, limit, Timestamp, addDoc } from 'firebase/firestore'
 
-const Channel = ({ user = null }) => {
+const Channel = () => {
     const [messages, setMessages] = useState([])
+    const [newMessage, setNewMessage] = useState('')
+
+    const user = auth.currentUser
+
+    const { displayName, uid, photoURL } = user
 
     useEffect(() => {
         if (db) {
@@ -22,12 +27,41 @@ const Channel = ({ user = null }) => {
         }
     }, [db])
 
+    const handleOnChange = e => {
+        setNewMessage(e.target.value)
+    }
+
+    const handleOnSubmit = async e => {
+        e.preventDefault()
+
+        if (db) {
+            await addDoc(collection(db, 'messages'), {
+                text: newMessage,
+                createdAt: Timestamp.fromDate(new Date()),
+                uid,
+                username: displayName,
+                avatar: photoURL
+            })
+        }
+    }
+
     return <>
         <ul>
             {messages.map(message => (
                 <li key={message.id}>{message.text}</li>
             ))}
         </ul>
+        <form onSubmit={handleOnSubmit}>
+            <input
+                type='text'
+                value={newMessage}
+                onChange={handleOnChange}
+                placeholder='Escriba su mensaje aquí...'
+            />
+            <button type='submit' disabled={!newMessage}>
+                Enviar
+            </button>
+        </form>
     </>
 }
 
