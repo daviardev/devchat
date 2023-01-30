@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router'
 
+import { db } from 'firebase/client'
+
 import { signOutFromAccount } from 'firebase/client'
 import useUser, { STATES } from 'hooks/useUser'
+import Channel from 'components/Channel'
 
 const home = () => {
     const user = useUser()
@@ -18,8 +21,8 @@ const home = () => {
     }
     return <>
         {user && <>
-            <button onClick={handleLogout}>Cerrar sesión</button>
-            <p>Bienvenido al chat</p>
+            <button onClick={handleLogout}>Cerrar sesión</button> 
+            <Channel user={user} db={db} />
         </>
         }
     </>
